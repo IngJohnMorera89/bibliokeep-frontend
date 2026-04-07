@@ -1,0 +1,8 @@
+<button
+  type="{{ type() }}"
+  [class]="buttonClass()"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel()"
+  (click)="clicked.emit($event)">
+  <ng-content></ng-content>
+</button>

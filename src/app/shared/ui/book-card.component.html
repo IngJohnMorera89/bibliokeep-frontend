@@ -1,0 +1,19 @@
+<article *ngIf="book() as currentBook" class="group rounded-3xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+  <div class="flex gap-4">
+    <img
+      [src]="currentBook.thumbnail"
+      [alt]="currentBook.title"
+      class="h-28 w-20 rounded-2xl object-cover transition-transform group-hover:scale-105"
+    />
+    <div class="flex-1">
+      <p class="text-xs uppercase tracking-[0.28em] text-gray-500">{{ currentBook.status }}</p>
+      <h3 class="mt-2 text-lg font-semibold text-gray-900">{{ currentBook.title }}</h3>
+      <p class="mt-1 text-sm text-gray-600">{{ currentBook.authors.join(', ') }}</p>
+      <p class="mt-3 text-sm text-gray-500 line-clamp-3">{{ currentBook.description }}</p>
+    </div>
+  </div>
+  <div class="mt-4 flex items-center justify-between text-sm text-gray-600">
+    <span>{{ currentBook.isLent ? 'Prestado' : 'Disponible' }}</span>
+    <span>ISBN {{ currentBook.isbn }}</span>
+  </div>
+</article>

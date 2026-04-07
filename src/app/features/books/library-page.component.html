@@ -1,0 +1,90 @@
+<section class="space-y-6 p-6">
+  <header class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="text-sm uppercase tracking-[0.24em] text-gray-500">Biblioteca</p>
+      <h1 class="mt-2 text-3xl font-semibold text-gray-900">Tus libros</h1>
+      <p class="mt-2 text-gray-600">Gestiona tu colección y añade nuevos libros en cualquier momento.</p>
+    </div>
+
+    <form [formGroup]="searchForm" class="w-full max-w-xl">
+      <label class="relative block w-full">
+        <span class="sr-only">Buscar libros</span>
+        <input
+          formControlName="query"
+          type="search"
+          placeholder="Buscar por título o autor"
+          class="w-full rounded-3xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+          (input)="store.setFilter(searchForm.get('query')?.value ?? '')"
+        />
+      </label>
+    </form>
+  </header>
+
+  <div class="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
+    <div class="space-y-4">
+      <div class="grid gap-4 md:grid-cols-2">
+        <ng-container *ngFor="let book of store.filteredBooks()">
+          <bk-book-card [book]="book"></bk-book-card>
+        </ng-container>
+      </div>
+
+      <p *ngIf="store.filteredBooks().length === 0" class="text-center text-gray-500">No se encontraron libros para la búsqueda.</p>
+    </div>
+
+    <aside class="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
+      <h2 class="text-xl font-semibold text-gray-900">Agregar libro nuevo</h2>
+      <form [formGroup]="bookForm" (ngSubmit)="addBook()" class="mt-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Título</label>
+          <input
+            formControlName="title"
+            class="mt-2 w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            aria-label="Título del libro"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Autor(es)</label>
+          <input
+            formControlName="authors"
+            class="mt-2 w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            placeholder="Separados por coma"
+            aria-label="Autores del libro"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">ISBN</label>
+          <input
+            formControlName="isbn"
+            class="mt-2 w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            aria-label="ISBN del libro"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Estado</label>
+          <select
+            formControlName="status"
+            class="mt-2 w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            aria-label="Estado del libro"
+          >
+            <option value="DESEADO">DESEADO</option>
+            <option value="COMPRADO">COMPRADO</option>
+            <option value="LEYENDO">LEYENDO</option>
+            <option value="LEIDO">LEIDO</option>
+            <option value="ABANDONADO">ABANDONADO</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-2xl bg-blue-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-400 focus:ring-2 focus:ring-blue-500/20"
+          [disabled]="bookForm.invalid"
+        >
+          Guardar libro
+        </button>
+      </form>
+    </aside>
+  </div>
+</section>

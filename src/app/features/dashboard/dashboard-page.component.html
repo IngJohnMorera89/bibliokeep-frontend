@@ -1,0 +1,33 @@
+<section class="space-y-6 p-6">
+  <header class="space-y-3">
+    <p class="text-sm uppercase tracking-[0.24em] text-gray-500">Resumen</p>
+    <h1 class="text-3xl font-semibold text-gray-900">Panel de control</h1>
+    <p class="max-w-2xl text-gray-600">Mira tus métricas de lectura, libros prestados y progreso hacia tus metas.</p>
+  </header>
+
+  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <bk-stats-widget
+      label="Libros en colección"
+      [value]="stats.metrics().booksOwned"
+      detail="Cantidad total de libros registrados"
+    ></bk-stats-widget>
+
+    <bk-stats-widget
+      label="Libros leídos"
+      [value]="stats.metrics().booksRead"
+      detail="Registros completados este año"
+    ></bk-stats-widget>
+
+    <bk-stats-widget
+      label="Meta mensual"
+      [value]="stats.metrics().monthlyGoal"
+      detail="Lecturas planificadas para este mes"
+    ></bk-stats-widget>
+
+    <bk-stats-widget
+      label="Libros prestados"
+      [value]="stats.metrics().booksLent"
+      detail="Libros prestados a terceros"
+    ></bk-stats-widget>
+  </div>
+</section>
