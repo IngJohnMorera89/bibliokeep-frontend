@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { BookStoreService } from './book-store.service';
+import { BookStoreService } from '../../shared/services/book-store.service';
 
 describe('BookStoreService', () => {
   let service: BookStoreService;
@@ -15,7 +15,7 @@ describe('BookStoreService', () => {
 
   it('should filter books using the query signal', () => {
     service.setFilter('Cien años');
-    expect(service.filteredBooks().every((book) => book.title.includes('Cien años') || book.authors.some((author) => author.includes('Cien años')))).toBe(true);
+    expect(service.filteredBooks().every((book: any) => book.title.includes('Cien años') || book.authors.some((author: any) => author.includes('Cien años')))).toBe(true);
   });
 
   it('should add a new book to the collection', () => {

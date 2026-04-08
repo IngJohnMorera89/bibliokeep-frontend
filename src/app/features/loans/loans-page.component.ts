@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoanService } from './loan.service';
-import { BookStoreService } from '../books/book-store.service';
+import { LoanService } from '../../shared/services/loan.service';
+import { BookStoreService } from '../../shared/services/book-store.service';
 
 @Component({
   selector: 'bk-loans-page',

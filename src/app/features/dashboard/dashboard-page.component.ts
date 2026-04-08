@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { StatsService } from './stats.service';
+import { StatsService } from '../../shared/services/stats.service';
 import { StatsWidgetComponent } from '../../shared/ui/stats-widget.component';
 
 @Component({

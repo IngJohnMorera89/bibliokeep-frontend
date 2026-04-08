@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../features/auth/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'bk-header',

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BookCardComponent } from '../../shared/ui/book-card.component';
-import { BookStoreService } from './book-store.service';
+import { BookStoreService } from '../../shared/services/book-store.service';
 
 @Component({
   selector: 'bk-library-page',
