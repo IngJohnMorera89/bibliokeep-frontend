@@ -1,12 +1,15 @@
 import { signal } from '@angular/core';
 import { Book } from '../../shared/types/book';
 
+export const isLoading = signal(false);
+export const error = signal<string | null>(null);
 export const results = signal<Book[]>([]);
 
 export const search = (query: string) => {
   const normalized = query.trim().toLowerCase();
   if (!normalized) {
     results.set([]);
+    error.set(null);
     return;
   }
 
@@ -25,4 +28,16 @@ export const search = (query: string) => {
   ];
 
   results.set(sample.filter((book) => book.title.toLowerCase().includes(normalized) || book.authors.some((author) => author.toLowerCase().includes(normalized))));
+};
+
+export const setLoading = (loading: boolean) => {
+  isLoading.set(loading);
+};
+
+export const setError = (err: string | null) => {
+  error.set(err);
+};
+
+export const clearError = () => {
+  error.set(null);
 };

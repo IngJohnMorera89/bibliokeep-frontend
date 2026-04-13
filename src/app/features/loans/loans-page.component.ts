@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoanService } from '../../shared/services/loan.service';
 import { BookStoreService } from '../../shared/services/book-store.service';
+import { CreateLoanRequest } from '../../shared/types/loan-requests';
 
 @Component({
   selector: 'bk-loans-page',
@@ -11,13 +12,16 @@ import { BookStoreService } from '../../shared/services/book-store.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './loans-page.component.html'
 })
-export class LoansPageComponent {
+export class LoansPageComponent implements OnInit {
   private loanService = inject(LoanService);
   private bookStore = inject(BookStoreService);
   private fb = inject(FormBuilder);
 
-  readonly loans = computed(() => this.loanService.loans());
-  readonly books = computed(() => this.bookStore.books());
+  // Expose signals to template
+  readonly loans = this.loanService.loans;
+  readonly books = this.bookStore.books;
+  readonly isLoading = this.loanService.isLoading;
+  readonly error = this.loanService.error;
 
   readonly loanForm = this.fb.group({
     bookId: ['', [Validators.required]],
@@ -26,25 +30,41 @@ export class LoansPageComponent {
     dueDate: ['', [Validators.required]]
   });
 
-  addLoan() {
+  async ngOnInit() {
+    try {
+      await this.loanService.fetchAllLoans();
+      await this.bookStore.fetchAllBooks();
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  }
+
+  async addLoan() {
     if (this.loanForm.invalid) {
       return;
     }
 
-    const form = this.loanForm.value;
-    this.loanService.addLoan({
-      id: Date.now(),
-      bookId: Number(form.bookId),
-      contactName: form.contactName ?? '',
-      loanDate: form.loanDate ?? '',
-      dueDate: form.dueDate ?? '',
-      returned: false
-    });
+    try {
+      const form = this.loanForm.value;
+      const request: CreateLoanRequest = {
+        bookId: Number(form.bookId),
+        contactName: form.contactName ?? '',
+        loanDate: form.loanDate ?? '',
+        dueDate: form.dueDate ?? ''
+      };
 
-    this.loanForm.reset({ bookId: '', contactName: '', loanDate: '', dueDate: '' });
+      await this.loanService.createLoan(request);
+      this.loanForm.reset({ bookId: '', contactName: '', loanDate: '', dueDate: '' });
+    } catch (error) {
+      console.error('Error creating loan:', error);
+    }
   }
 
-  markReturned(id: number) {
-    this.loanService.markReturned(id);
+  async markReturned(id: number) {
+    try {
+      await this.loanService.returnLoan(id);
+    } catch (error) {
+      console.error('Error returning loan:', error);
+    }
   }
 }

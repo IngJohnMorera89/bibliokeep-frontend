@@ -1,6 +1,9 @@
-import { computed } from '@angular/core';
+import { computed, signal } from '@angular/core';
 import { books } from './books.store';
 import { loans } from './loans.store';
+
+export const isLoading = signal(false);
+export const error = signal<string | null>(null);
 
 export interface DashboardMetrics {
   booksOwned: number;
@@ -17,3 +20,15 @@ export const metrics = computed<DashboardMetrics>(() => {
 
   return { booksOwned, booksRead, monthlyGoal, booksLent };
 });
+
+export const setLoading = (loading: boolean) => {
+  isLoading.set(loading);
+};
+
+export const setError = (err: string | null) => {
+  error.set(err);
+};
+
+export const clearError = () => {
+  error.set(null);
+};

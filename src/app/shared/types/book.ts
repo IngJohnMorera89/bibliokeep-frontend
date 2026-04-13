@@ -1,3 +1,5 @@
+export type BookStatus = 'DESEADO' | 'COMPRADO' | 'LEYENDO' | 'LEIDO' | 'ABANDONADO';
+
 export interface Book {
   id: number;
   title: string;
@@ -5,7 +7,7 @@ export interface Book {
   isbn: string;
   description: string;
   thumbnail: string;
-  status: 'DESEADO' | 'COMPRADO' | 'LEYENDO' | 'LEIDO' | 'ABANDONADO';
+  status: BookStatus;
   rating: number;
   isLent: boolean;
 }

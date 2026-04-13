@@ -12,10 +12,28 @@ import { SearchService } from '../../shared/services/search.service';
   templateUrl: './book-search-page.component.html'
 })
 export class BookSearchPageComponent {
-  readonly searchService = inject(SearchService);
+  private searchService = inject(SearchService);
   private fb = inject(FormBuilder);
+
+  // Expose search service signals to template
+  readonly results = this.searchService.results;
+  readonly isLoading = this.searchService.isLoading;
+  readonly error = this.searchService.error;
 
   readonly searchForm = this.fb.group({
     query: ['']
   });
+
+  async onSearch() {
+    const query = this.searchForm.get('query')?.value;
+    if (!query || !query.trim()) {
+      return;
+    }
+
+    try {
+      await this.searchService.search(query);
+    } catch (error) {
+      console.error('Search error:', error);
+    }
+  }
 }

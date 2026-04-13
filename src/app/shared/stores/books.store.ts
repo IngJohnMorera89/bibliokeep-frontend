@@ -1,6 +1,9 @@
 import { computed, signal } from '@angular/core';
 import { Book } from '../../shared/types/book';
 
+export const isLoading = signal(false);
+export const error = signal<string | null>(null);
+
 export const books = signal<Book[]>([
   {
     id: 1,
@@ -45,4 +48,16 @@ export const setFilter = (value: string) => {
 
 export const addBook = (book: Book) => {
   books.update((current) => [...current, book]);
+};
+
+export const setLoading = (loading: boolean) => {
+  isLoading.set(loading);
+};
+
+export const setError = (err: string | null) => {
+  error.set(err);
+};
+
+export const clearError = () => {
+  error.set(null);
 };
