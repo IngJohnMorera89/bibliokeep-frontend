@@ -15,7 +15,8 @@ describe('BookStoreService', () => {
 
   it('should filter books using the query signal', () => {
     service.setFilter('Cien años');
-    expect(service.filteredBooks().every((book: any) => book.title.includes('Cien años') || book.authors.some((author: any) => author.includes('Cien años')))).toBe(true);
+    const filtered = service.filteredBooks();
+    expect(Array.isArray(filtered) && filtered.every((book: any) => book.title.includes('Cien años') || book.authors.some((author: any) => author.includes('Cien años')))).toBe(true);
   });
 
   it('should add a new book to the collection', () => {

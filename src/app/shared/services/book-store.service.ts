@@ -17,6 +17,12 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class BookStoreService {
+  addBook(arg0: { id: number; title: string; authors: string[]; isbn: string; description: string; thumbnail: string; status: string; rating: number; isLent: boolean; }) {
+    throw new Error('Method not implemented.');
+  }
+  filteredBooks() {
+    throw new Error('Method not implemented.');
+  }
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/api/books';
 
