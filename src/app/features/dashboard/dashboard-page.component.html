@@ -8,25 +8,25 @@
   <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
     <bk-stats-widget
       label="Libros en colección"
-      [value]="stats.metrics().booksOwned"
+      [value]="statsService.metrics().booksOwned"
       detail="Cantidad total de libros registrados"
     ></bk-stats-widget>
 
     <bk-stats-widget
       label="Libros leídos"
-      [value]="stats.metrics().booksRead"
+      [value]="statsService.metrics().booksRead"
       detail="Registros completados este año"
     ></bk-stats-widget>
 
     <bk-stats-widget
       label="Meta mensual"
-      [value]="stats.metrics().monthlyGoal"
+      [value]="statsService.metrics().monthlyGoal"
       detail="Lecturas planificadas para este mes"
     ></bk-stats-widget>
 
     <bk-stats-widget
       label="Libros prestados"
-      [value]="stats.metrics().booksLent"
+      [value]="statsService.metrics().booksLent"
       detail="Libros prestados a terceros"
     ></bk-stats-widget>
   </div>

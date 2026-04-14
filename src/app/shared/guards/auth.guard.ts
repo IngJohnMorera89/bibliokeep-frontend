@@ -5,9 +5,9 @@ import { AuthService } from '../services/auth.service';
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  if (authService.isAuthenticated()) {
-    return true;
-  }
-  router.navigate(['/login']);
-  return false;
+
+  // isAuthenticated es un Signal, así que lo llamamos como función ()
+  return authService.isAuthenticated() 
+    ? true 
+    : router.parseUrl('/login');
 };

@@ -12,8 +12,8 @@ import { SearchService } from '../../shared/services/search.service';
   templateUrl: './book-search-page.component.html'
 })
 export class BookSearchPageComponent {
-  private searchService = inject(SearchService);
-  private fb = inject(FormBuilder);
+  public readonly searchService = inject(SearchService);
+  private readonly fb = inject(FormBuilder);
 
   // Expose search service signals to template
   readonly results = this.searchService.results;

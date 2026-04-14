@@ -14,7 +14,7 @@
           type="search"
           placeholder="Buscar por título o autor"
           class="w-full rounded-3xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-          (input)="store.setFilter(searchForm.get('query')?.value ?? '')"
+          (input)="bookStore.setFilter(searchForm.get('query')?.value ?? '')"
         />
       </label>
     </form>

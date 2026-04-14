@@ -13,7 +13,7 @@ import { StatsWidgetComponent } from '../../shared/ui/stats-widget.component';
   templateUrl: './dashboard-page.component.html'
 })
 export class DashboardPageComponent implements OnInit {
-  private statsService = inject(StatsService);
+  public statsService = inject(StatsService);
   private bookStore = inject(BookStoreService);
   private loanService = inject(LoanService);
 

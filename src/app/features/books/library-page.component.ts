@@ -13,8 +13,8 @@ import { CreateBookRequest } from '../../shared/types/book-requests';
   templateUrl: './library-page.component.html'
 })
 export class LibraryPageComponent implements OnInit {
-  private bookStore = inject(BookStoreService);
-  private fb = inject(FormBuilder);
+  public readonly bookStore = inject(BookStoreService);
+  private readonly fb = inject(FormBuilder);
 
   // Expose store signals to template
   readonly books = this.bookStore.books;
@@ -33,6 +33,7 @@ export class LibraryPageComponent implements OnInit {
     status: ['DESEADO', [Validators.required]],
     rating: [0]
   });
+store: any;
 
   async ngOnInit() {
     try {

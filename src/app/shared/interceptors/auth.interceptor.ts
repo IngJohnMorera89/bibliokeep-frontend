@@ -1,44 +1,51 @@
 import { inject } from '@angular/core';
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, switchMap, throwError, from } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const token = authService.getAccessToken();
+  const token = authService.accessToken(); // Usamos el signal directamente
 
-  // Add Authorization header if token exists
+  let authReq = req;
+
+  // 1. Añadir el header si existe el token
   if (token) {
-    req = req.clone({
+    authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
   }
 
-  return next(req).pipe(
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      // If we get a 401 (Unauthorized), try to refresh the token
-      if (error.status === 401 && authService.getRefreshToken()) {
-        return authService.refreshAccessToken().pipe(
+      
+      // 2. Si obtenemos un 401 y no es la petición de login o refresh
+      const isAuthPath = req.url.includes('/api/auth/login') || req.url.includes('/api/auth/refresh');
+      
+      if (error.status === 401 && !isAuthPath && authService.refreshToken()) {
+        
+        // Intentamos refrescar el token
+        return from(authService.refreshAccessToken()).pipe(
           switchMap((response) => {
-            // Retry the request with the new token
-            const newToken = response.accessToken;
-            const authReq = req.clone({
+            // Reintentamos la petición original con el nuevo token
+            const retryReq = req.clone({
               setHeaders: {
-                Authorization: `Bearer ${newToken}`
+                Authorization: `Bearer ${response.accessToken}`
               }
             });
-            return next(authReq);
+            return next(retryReq);
           }),
-          catchError(() => {
-            // If refresh fails, logout
-            authService.logoutUser();
-            return throwError(() => new Error('Session expired'));
+          catchError((refreshError) => {
+            // Si el refresh también falla, limpiamos todo
+            authService.logout();
+            return throwError(() => refreshError);
           })
         );
       }
 
+      // Si es otro error o falló la autenticación base, lo lanzamos
       return throwError(() => error);
     })
   );
