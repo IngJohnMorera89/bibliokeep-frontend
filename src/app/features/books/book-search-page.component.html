@@ -1,31 +1,41 @@
-<section class="space-y-6 p-6">
-  <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-    <div>
-      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Buscar libro</p>
-      <h1 class="mt-2 text-3xl font-semibold text-slate-950">Búsqueda híbrida</h1>
-    </div>
+<section class="min-h-screen bg-[#111827] p-8 space-y-8 text-white">
+  
+  <header class="space-y-2">
+    <p class="text-xs uppercase tracking-widest text-slate-400 font-medium">Panel de control</p>
+    <h1 class="text-4xl font-bold tracking-tight">Búsqueda de libros</h1>
+    <p class="text-slate-400">Encuentra y gestiona tu colección desde aquí</p>
+  </header>
 
-    <form [formGroup]="searchForm" class="w-full max-w-xl">
-      <label class="relative block w-full">
-        <span class="sr-only">Buscar por título, autor o ISBN</span>
+  <div class="bg-[#1f2937] rounded-2xl p-6 border border-slate-800 shadow-xl">
+    <form [formGroup]="searchForm" class="w-full">
+      <div class="relative group">
+        <label class="sr-only">Buscar por título, autor o ISBN</label>
+        <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-focus-within:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
         <input
           formControlName="query"
           type="search"
-          placeholder="Buscar por título, autor o ISBN"
-          class="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-cyan-500"
+          placeholder="Busca en tu biblioteca..."
+          class="w-full rounded-xl bg-[#111827] border border-slate-700 pl-12 pr-4 py-4 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
           (input)="searchService.search(searchForm.get('query')?.value ?? '')"
-          />
-        </label>
-      </form>
-    </header>
+        />
+      </div>
+    </form>
+  </div>
 
-    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-      @for (book of searchService.results(); track book) {
-        <bk-book-card [book]="book"></bk-book-card>
-      }
-    </div>
-
-    @if (searchService.results().length === 0) {
-      <p class="text-center text-slate-500">Empieza a escribir para ver resultados de búsqueda.</p>
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    @for (book of searchService.results(); track book) {
+      <bk-book-card [book]="book"></bk-book-card>
     }
-  </section>
+  </div>
+
+  @if (searchService.results().length === 0) {
+    <div class="flex flex-col items-center justify-center py-20 bg-[#1f2937] rounded-3xl border border-dashed border-slate-700">
+      <h3 class="text-xl font-medium text-slate-300">¿Qué vamos a leer hoy?</h3>
+      <p class="text-slate-500 mt-2">Introduce un término para filtrar los resultados.</p>
+    </div>
+  }
+</section>

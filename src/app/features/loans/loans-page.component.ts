@@ -4,11 +4,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoanService } from '../../shared/services/loan.service';
 import { BookStoreService } from '../../shared/services/book-store.service';
 import { CreateLoanRequest } from '../../shared/types/loan-requests';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'bk-loans-page',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './loans-page.component.html'
 })

@@ -1,33 +1,53 @@
-<section class="space-y-6 p-6">
-  <header class="space-y-3">
-    <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Préstamos</p>
-    <h1 class="text-3xl font-semibold text-slate-950">Gestión de préstamos</h1>
-    <p class="max-w-2xl text-slate-600">Crea nuevos préstamos y marca los libros como devueltos.</p>
+<section class="min-h-screen bg-[#111827] p-8 space-y-8 text-white">
+  
+  <header class="space-y-2">
+    <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">Préstamos</p>
+    <h1 class="text-4xl font-extrabold tracking-tight">Gestión de préstamos</h1>
+    <p class="text-slate-400">Crea nuevos préstamos y monitorea las fechas de devolución.</p>
   </header>
 
-  <div class="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+  <div class="grid gap-8 xl:grid-cols-[1.5fr_1fr]">
+    
     <div class="space-y-4">
-      @for (loan of loans(); track loan) {
-        <article
-          class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
-          >
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      @for (loan of loans(); track loan.id) {
+        <article class="relative overflow-hidden rounded-3xl border border-slate-800 bg-[#1f2937] p-6 shadow-lg transition-all hover:border-slate-700">
+          
+          <div class="absolute left-0 top-0 h-full w-1.5" 
+               [class]="loan.returned ? 'bg-emerald-500' : 'bg-orange-500'">
+          </div>
+
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p class="text-sm font-semibold text-slate-950">{{ loan.contactName }}</p>
-              <p class="text-sm text-slate-500">Libro ID {{ loan.bookId }}</p>
+              <p class="text-lg font-bold text-white">{{ loan.contactName }}</p>
+              <p class="text-sm text-slate-400">Libro ID: <span class="font-mono text-blue-400">{{ loan.bookId }}</span></p>
             </div>
-            <div class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">
+            
+            <div class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border"
+                 [ngClass]="{
+                   'bg-emerald-500/10 text-emerald-500 border-emerald-500/20': loan.returned,
+                   'bg-orange-500/10 text-orange-500 border-orange-500/20': !loan.returned
+                 }">
               {{ loan.returned ? 'Devuelto' : 'Pendiente' }}
             </div>
           </div>
-          <div class="mt-4 grid gap-2 sm:grid-cols-3">
-            <span class="text-sm text-slate-600">Préstamo: {{ loan.loanDate }}</span>
-            <span class="text-sm text-slate-600">Vencimiento: {{ loan.dueDate }}</span>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-3 items-end">
+            <div class="flex flex-col">
+              <span class="text-[10px] uppercase font-bold text-slate-500">Fecha Préstamo</span>
+              <span class="text-sm text-slate-200">{{ loan.loanDate }}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-[10px] uppercase font-bold text-slate-500">Vencimiento</span>
+              <span class="text-sm font-semibold" [class]="loan.returned ? 'text-slate-400' : 'text-orange-400'">
+                {{ loan.dueDate }}
+              </span>
+            </div>
+
             @if (!loan.returned) {
               <button
-                class="rounded-2xl bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+                class="w-full rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white transition-all hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]"
                 (click)="markReturned(loan.id)"
-                >
+              >
                 Marcar devuelto
               </button>
             }
@@ -36,65 +56,76 @@
       }
 
       @if (loans().length === 0) {
-        <p class="text-center text-slate-500">No hay préstamos registrados.</p>
+        <div class="flex flex-col items-center justify-center py-20 bg-[#1f2937]/30 rounded-3xl border border-dashed border-slate-800 text-slate-500">
+          <p class="text-lg">No hay préstamos registrados actualmente.</p>
+        </div>
       }
     </div>
 
-    <aside class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 class="text-xl font-semibold text-slate-950">Nuevo préstamo</h2>
-      <form [formGroup]="loanForm" (ngSubmit)="addLoan()" class="mt-6 space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Libro</label>
-          <select
-            formControlName="bookId"
-            class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
-            aria-label="Seleccionar libro"
+    <aside class="h-fit rounded-3xl bg-[#1f2937] border border-slate-800 p-8 shadow-2xl">
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-white">Nuevo préstamo</h2>
+        <p class="text-slate-400 text-sm">Asigna un libro a un contacto de tu lista.</p>
+      </div>
+
+      <form [formGroup]="loanForm" (ngSubmit)="addLoan()" class="space-y-5">
+        
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase tracking-widest text-slate-400">Seleccionar Libro</label>
+          <div class="relative">
+            <select
+              formControlName="bookId"
+              class="w-full rounded-xl border border-slate-700 bg-[#111827] px-4 py-3.5 text-white outline-none transition focus:ring-2 focus:ring-blue-500/40 appearance-none cursor-pointer"
             >
-            <option value="">Selecciona un libro</option>
-            @for (book of books(); track book) {
-              <option [value]="book.id">{{ book.title }}</option>
-            }
-          </select>
+              <option value="">Selecciona un libro</option>
+              @for (book of books(); track book.id) {
+                <option [value]="book.id">{{ book.title }}</option>
+              }
+            </select>
+            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Contacto</label>
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase tracking-widest text-slate-400">Contacto</label>
           <input
             formControlName="contactName"
-            class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
-            aria-label="Nombre de contacto"
+            placeholder="Nombre de la persona"
+            class="w-full rounded-xl border border-slate-700 bg-[#111827] px-4 py-3.5 text-white outline-none transition focus:ring-2 focus:ring-blue-500/40 placeholder-slate-600"
+          />
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="space-y-2">
+            <label class="block text-xs font-bold uppercase tracking-widest text-slate-400">Fecha Préstamo</label>
+            <input
+              formControlName="loanDate"
+              type="date"
+              class="w-full rounded-xl border border-slate-700 bg-[#111827] px-4 py-3.5 text-white outline-none transition focus:ring-2 focus:ring-blue-500/40 [color-scheme:dark]"
             />
           </div>
-
-          <div class="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label class="block text-sm font-medium text-slate-700">Fecha de préstamo</label>
-              <input
-                formControlName="loanDate"
-                type="date"
-                class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
-                aria-label="Fecha de préstamo"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-slate-700">Fecha de devolución</label>
-                <input
-                  formControlName="dueDate"
-                  type="date"
-                  class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
-                  aria-label="Fecha de devolución"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                class="w-full rounded-2xl bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
-                [disabled]="loanForm.invalid"
-                >
-                Crear préstamo
-              </button>
-            </form>
-          </aside>
+          <div class="space-y-2">
+            <label class="block text-xs font-bold uppercase tracking-widest text-slate-400">Devolución</label>
+            <input
+              formControlName="dueDate"
+              type="date"
+              class="w-full rounded-xl border border-slate-700 bg-[#111827] px-4 py-3.5 text-white outline-none transition focus:ring-2 focus:ring-blue-500/40 [color-scheme:dark]"
+            />
+          </div>
         </div>
-      </section>
+
+        <button
+          type="submit"
+          class="w-full mt-4 rounded-2xl bg-blue-600 px-4 py-4 text-sm font-black uppercase tracking-widest text-white transition-all hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(37,99,235,0.45)] disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="loanForm.invalid"
+        >
+          Crear préstamo
+        </button>
+      </form>
+    </aside>
+  </div>
+</section>

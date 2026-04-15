@@ -1,21 +1,64 @@
 @if (book(); as currentBook) {
-  <article class="group rounded-3xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+  <article class="group relative overflow-hidden rounded-3xl bg-[#1f2937] border border-slate-800 p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-slate-700">
+    
+    <div class="absolute left-0 top-0 h-full w-1.5" 
+         [ngClass]="{
+           'bg-emerald-500': currentBook.status === 'LEIDO',
+           'bg-blue-600': currentBook.status === 'COMPRADO',
+           'bg-orange-500': currentBook.status === 'LEYENDO',
+           'bg-pink-600': currentBook.status === 'DESEADO',
+           'bg-red-500': currentBook.status === 'ABANDONADO'
+         }">
+    </div>
+
     <div class="flex gap-4">
       <img
         [src]="currentBook.thumbnail"
         [alt]="currentBook.title"
-        class="h-28 w-20 rounded-2xl object-cover transition-transform group-hover:scale-105"
-        />
-        <div class="flex-1">
-          <p class="text-xs uppercase tracking-[0.28em] text-gray-500">{{ currentBook.status }}</p>
-          <h3 class="mt-2 text-lg font-semibold text-gray-900">{{ currentBook.title }}</h3>
-          <p class="mt-1 text-sm text-gray-600">{{ currentBook.authors.join(', ') }}</p>
-          <p class="mt-3 text-sm text-gray-500 line-clamp-3">{{ currentBook.description }}</p>
+        class="h-28 w-20 rounded-2xl object-cover transition-transform group-hover:scale-105 shadow-md"
+      />
+      
+      <div class="flex-1">
+        <div class="flex justify-between items-start">
+          <p class="text-[10px] uppercase tracking-[0.2em] font-bold"
+             [ngClass]="{
+               'text-emerald-500': currentBook.status === 'LEIDO',
+               'text-blue-400': currentBook.status === 'COMPRADO',
+               'text-orange-500': currentBook.status === 'LEYENDO',
+               'text-pink-500': currentBook.status === 'DESEADO',
+               'text-slate-400': currentBook.status === 'ABANDONADO'
+             }">
+            {{ currentBook.status }}
+          </p>
+          
+          <span class="flex h-2 w-2 rounded-full" 
+                [class]="currentBook.isLent ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'">
+          </span>
         </div>
+
+        <h3 class="mt-1 text-lg font-bold text-white leading-tight line-clamp-1 group-hover:text-blue-400 transition-colors">
+          {{ currentBook.title }}
+        </h3>
+        
+        <p class="text-sm text-slate-400 italic">
+          {{ currentBook.authors.join(', ') }}
+        </p>
+        
+        <p class="mt-2 text-xs text-slate-500 line-clamp-2">
+          {{ currentBook.description }}
+        </p>
       </div>
-      <div class="mt-4 flex items-center justify-between text-sm text-gray-600">
-        <span>{{ currentBook.isLent ? 'Prestado' : 'Disponible' }}</span>
-        <span>ISBN {{ currentBook.isbn }}</span>
+    </div>
+
+    <div class="mt-4 flex items-center justify-between border-t border-slate-800/50 pt-3">
+      <div class="flex flex-col">
+        <span class="text-[10px] uppercase text-slate-500 font-black">ISBN</span>
+        <span class="text-xs font-mono text-slate-300">{{ currentBook.isbn }}</span>
       </div>
-    </article>
-  }
+      
+      <div class="text-[11px] font-bold px-2 py-1 rounded-md bg-[#111827] text-slate-300">
+        {{ currentBook.isLent ? '📕 PRESTADO' : '📗 DISPONIBLE' }}
+      </div>
+    </div>
+  </article>
+}
