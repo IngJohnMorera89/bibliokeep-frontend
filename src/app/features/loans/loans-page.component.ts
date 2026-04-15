@@ -68,4 +68,5 @@ export class LoansPageComponent implements OnInit {
       console.error('Error returning loan:', error);
     }
   }
+  
 }

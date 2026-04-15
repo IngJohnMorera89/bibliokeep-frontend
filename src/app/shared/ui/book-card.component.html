@@ -1,5 +1,6 @@
 @if (book(); as currentBook) {
-  <article class="group relative overflow-hidden rounded-3xl bg-[#1f2937] border border-slate-800 p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-slate-700">
+  <article (click)="selected.emit($event)" 
+           class="group relative overflow-hidden rounded-3xl bg-[#1f2937] border border-slate-800 p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-slate-700 cursor-pointer">
     
     <div class="absolute left-0 top-0 h-full w-1.5" 
          [ngClass]="{
@@ -12,40 +13,33 @@
     </div>
 
     <div class="flex gap-4">
-      <img
-        [src]="currentBook.thumbnail"
-        [alt]="currentBook.title"
-        class="h-28 w-20 rounded-2xl object-cover transition-transform group-hover:scale-105 shadow-md"
-      />
+      <div class="relative shrink-0">
+       <img
+        [src]="book()?.thumbnail" 
+        [alt]="book()?.title"
+        (error)="updateUrlWithPlaceholder($event)" 
+        class="h-28 w-20 rounded-2xl object-cover shadow-md bg-slate-800"
+          />
+      </div>
       
-      <div class="flex-1">
-        <div class="flex justify-between items-start">
-          <p class="text-[10px] uppercase tracking-[0.2em] font-bold"
-             [ngClass]="{
-               'text-emerald-500': currentBook.status === 'LEIDO',
-               'text-blue-400': currentBook.status === 'COMPRADO',
-               'text-orange-500': currentBook.status === 'LEYENDO',
-               'text-pink-500': currentBook.status === 'DESEADO',
-               'text-slate-400': currentBook.status === 'ABANDONADO'
-             }">
-            {{ currentBook.status }}
-          </p>
-          
-          <span class="flex h-2 w-2 rounded-full" 
-                [class]="currentBook.isLent ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'">
-          </span>
-        </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-[10px] uppercase tracking-[0.2em] font-black"
+           [ngClass]="{
+             'text-emerald-500': currentBook.status === 'LEIDO',
+             'text-blue-400': currentBook.status === 'COMPRADO',
+             'text-orange-500': currentBook.status === 'LEYENDO',
+             'text-pink-500': currentBook.status === 'DESEADO',
+             'text-slate-400': currentBook.status === 'ABANDONADO'
+           }">
+          {{ currentBook.status }}
+        </p>
 
-        <h3 class="mt-1 text-lg font-bold text-white leading-tight line-clamp-1 group-hover:text-blue-400 transition-colors">
+        <h3 class="mt-1 text-lg font-bold text-white leading-tight line-clamp-2 group-hover:text-blue-400 transition-colors">
           {{ currentBook.title }}
         </h3>
         
-        <p class="text-sm text-slate-400 italic">
+        <p class="mt-1 text-sm text-slate-400 italic truncate">
           {{ currentBook.authors.join(', ') }}
-        </p>
-        
-        <p class="mt-2 text-xs text-slate-500 line-clamp-2">
-          {{ currentBook.description }}
         </p>
       </div>
     </div>
@@ -56,7 +50,8 @@
         <span class="text-xs font-mono text-slate-300">{{ currentBook.isbn }}</span>
       </div>
       
-      <div class="text-[11px] font-bold px-2 py-1 rounded-md bg-[#111827] text-slate-300">
+      <div class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-[#111827] border border-slate-800/50"
+           [ngClass]="currentBook.isLent ? 'text-rose-400' : 'text-emerald-400'">
         {{ currentBook.isLent ? '📕 PRESTADO' : '📗 DISPONIBLE' }}
       </div>
     </div>

@@ -29,6 +29,20 @@ export const books = signal<Book[]>([
   }
 ]);
 
+// ... tus imports (computed, signal)
+
+export const booksByStatus = computed(() => {
+  const currentBooks = books();
+  return {
+    leidos: currentBooks.filter(b => b.status === 'LEIDO').length,
+    leyendo: currentBooks.filter(b => b.status === 'LEYENDO').length,
+    deseados: currentBooks.filter(b => b.status === 'DESEADO').length,
+    comprados: currentBooks.filter(b => b.status === 'COMPRADO').length,
+    abandonados: currentBooks.filter(b => b.status === 'ABANDONADO').length
+  };
+});
+
+
 export const filter = signal('');
 
 export const filteredBooks = computed(() => {
@@ -47,7 +61,17 @@ export const setFilter = (value: string) => {
 };
 
 export const addBook = (book: Book) => {
-  books.update((current) => [...current, book]);
+  // 1. Aseguramos un ID temporal si viene de un formulario local (opcional)
+  const newBook = {
+    ...book,
+    id: book.id || Math.floor(Math.random() * 10000), // Evita IDs duplicados localmente
+    isLent: book.isLent ?? false, // Valor por defecto si no viene en el form
+    thumbnail: book.thumbnail || 'assets/no-book-cover.png' // Fallback para la imagen
+  };
+
+  // 2. Actualizamos la señal con una nueva referencia de array
+  books.update((current) => [...current, newBook]);
+
 };
 
 export const setLoading = (loading: boolean) => {
