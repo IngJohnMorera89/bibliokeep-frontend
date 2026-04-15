@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, computed, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'bk-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './button.component.html'
 })

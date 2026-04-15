@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BookCardComponent } from '../../shared/ui/book-card.component';
@@ -8,7 +8,7 @@ import { CreateBookRequest } from '../../shared/types/book-requests';
 @Component({
   selector: 'bk-library-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BookCardComponent],
+  imports: [ReactiveFormsModule, BookCardComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './library-page.component.html'
 })
@@ -57,7 +57,7 @@ store: any;
         description: raw.description || 'Libro agregado manualmente a tu colección.',
         thumbnail: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=250&q=80',
         status: (raw.status as any) || 'DESEADO',
-        rating: raw.rating || 0
+        rating: (raw.rating && raw.rating > 0) ? raw.rating : 1
       };
 
       await this.bookStore.createBook(request);

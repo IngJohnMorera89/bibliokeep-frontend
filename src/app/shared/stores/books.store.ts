@@ -61,3 +61,8 @@ export const setError = (err: string | null) => {
 export const clearError = () => {
   error.set(null);
 };
+
+// En tu archivo de signals/store
+export function setBooks(newBooks: Book[]) {
+  books.set(newBooks); // Esto reemplaza la lista vieja por la nueva, eliminando duplicados
+}

@@ -11,11 +11,12 @@ import {
   setError,
   clearError
 } from '../stores/search.store';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/books/search';
+  private readonly apiUrl = `${environment.backendUrl}api/books/search`;
 
   // Expose store signals
   readonly results = results;

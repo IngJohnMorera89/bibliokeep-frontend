@@ -12,27 +12,51 @@ import {
   error as booksError,
   setLoading,
   setError,
-  clearError
+  clearError,
+  setBooks,
+  // Asumo que tienes una función para limpiar o setear libros en tu store.ts
+  // Si no la tienes, usaremos addBook en un bucle.
 } from '../stores/books.store';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookStoreService {
-  addBook(arg0: { id: number; title: string; authors: string[]; isbn: string; description: string; thumbnail: string; status: string; rating: number; isLent: boolean; }) {
-    throw new Error('Method not implemented.');
-  }
-  filteredBooks() {
-    throw new Error('Method not implemented.');
-  }
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/books';
+  private readonly apiUrl = `${environment.backendUrl}api/books`;
 
-  // Expose store signals
+  // Exponemos los Signals del Store para que el componente los use
   readonly books = books;
   readonly isLoading = booksLoading;
   readonly error = booksError;
 
   /**
-   * Create a new book
+   * Obtener todos los libros del backend y sincronizarlos con el Store local
+   */
+  async fetchAllBooks(): Promise<Book[]> {
+    try {
+      setLoading(true);
+      clearError();
+
+      const fetchedBooks = await firstValueFrom(
+        this.http.get<Book[]>(`${this.apiUrl}`)
+      );
+
+      // IMPORTANTE: Limpiar el store o actualizarlo. 
+      // Si tu store no tiene un setBooks, usamos el addBook que ya tienes:
+      setBooks(fetchedBooks);
+      
+      return fetchedBooks;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Error al obtener libros';
+      setError(message);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  /**
+   * Crear un nuevo libro
    */
   async createBook(request: CreateBookRequest): Promise<Book> {
     try {
@@ -43,7 +67,8 @@ export class BookStoreService {
         this.http.post<Book>(`${this.apiUrl}`, request)
       );
 
-      addBook(book);
+      // Esto añade el libro al Signal 'books' automáticamente
+      addBook(book); 
       return book;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error al crear libro';
@@ -55,51 +80,7 @@ export class BookStoreService {
   }
 
   /**
-   * Get all books for the current user
-   */
-  async fetchAllBooks(): Promise<Book[]> {
-    try {
-      setLoading(true);
-      clearError();
-
-      const books = await firstValueFrom(
-        this.http.get<Book[]>(`${this.apiUrl}`)
-      );
-
-      return books;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Error al obtener libros';
-      setError(message);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  /**
-   * Get a single book by ID
-   */
-  async fetchBookById(id: number): Promise<Book> {
-    try {
-      setLoading(true);
-      clearError();
-
-      const book = await firstValueFrom(
-        this.http.get<Book>(`${this.apiUrl}/${id}`)
-      );
-
-      return book;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Error al obtener libro';
-      setError(message);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  /**
-   * Search books by query (hybrid search: local -> cache -> external)
+   * Buscar libros (híbrido)
    */
   async searchBooks(query: string): Promise<BookSearchResponse> {
     try {
@@ -123,7 +104,7 @@ export class BookStoreService {
   }
 
   /**
-   * Update book status (DESEADO -> COMPRADO -> LEYENDO -> LEIDO)
+   * Actualizar estado del libro
    */
   async updateBookStatus(id: number, status: BookStatus): Promise<Book> {
     try {
@@ -135,6 +116,7 @@ export class BookStoreService {
         this.http.patch<Book>(`${this.apiUrl}/${id}/status`, request)
       );
 
+      // Aquí podrías disparar una lógica para actualizar el libro en el store local si fuera necesario
       return updatedBook;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error al actualizar estado';
@@ -146,9 +128,16 @@ export class BookStoreService {
   }
 
   /**
-   * Set local filter (client-side only)
+   * Filtro local (dispara el setFilter de tu books.store.ts)
    */
   setFilter(value: string) {
     setFilter(value);
+  }
+
+  /**
+   * Getter para que el HTML encuentre 'filteredBooks' si lo llamas así
+   */
+  get filteredBooks() {
+    return this.books; 
   }
 }

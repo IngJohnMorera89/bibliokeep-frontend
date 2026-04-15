@@ -1,3 +1,3 @@
 export const environment = {
-    backendUrl: 'http://api.bibliokeep.com',
+    backendUrl: 'http://api.bibliokeep.com'
 };

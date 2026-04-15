@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoanService } from '../../shared/services/loan.service';
@@ -8,7 +8,7 @@ import { CreateLoanRequest } from '../../shared/types/loan-requests';
 @Component({
   selector: 'bk-loans-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './loans-page.component.html'
 })

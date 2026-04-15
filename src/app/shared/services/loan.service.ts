@@ -13,11 +13,12 @@ import {
   setError,
   clearError
 } from '../stores/loans.store';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class LoanService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/loans';
+  private readonly apiUrl = `${environment.backendUrl}api/loans`;
 
   // Expose store signals
   readonly loans = loans;

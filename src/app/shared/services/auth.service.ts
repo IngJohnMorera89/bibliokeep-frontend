@@ -17,12 +17,13 @@ import {
 import { User } from '../types/user';
 import { AuthTokenResponse, LoginRequest, RegisterRequest, RefreshRequest } from '../types/auth-response';
 import { JwtDecoderService } from './jwt-decoder.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly jwtDecoder = inject(JwtDecoderService);
-  private readonly apiUrl = 'http://localhost:8080/api/auth';
+  private readonly apiUrl = `${environment.backendUrl}api/auth`;
 
   // Exponer los Signals del Store para que los componentes los consuman directamente
   readonly currentUser = currentUser;
@@ -35,7 +36,12 @@ export class AuthService {
     restoreTokensFromStorage();
     // 2. Si recuperamos un token, extraemos al usuario para mantener la sesión activa al recargar
     this.restoreUserFromToken();
+    console.log('Backend URL configurada:', environment.backendUrl);
+  console.log('API URL construida:', this.apiUrl);
+  restoreTokensFromStorage();
+  this.restoreUserFromToken();
   }
+ 
 
   /**
    * Intenta restaurar la información del usuario si hay un token válido en el store

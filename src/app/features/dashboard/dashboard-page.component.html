@@ -1,33 +1,56 @@
-<section class="space-y-6 p-6">
-  <header class="space-y-3">
-    <p class="text-sm uppercase tracking-[0.24em] text-gray-500">Resumen</p>
-    <h1 class="text-3xl font-semibold text-gray-900">Panel de control</h1>
-    <p class="max-w-2xl text-gray-600">Mira tus métricas de lectura, libros prestados y progreso hacia tus metas.</p>
+<div class="min-h-screen bg-[#0f172a] text-slate-200 p-6">
+  <header class="mb-10">
+    <h1 class="text-4xl font-extrabold text-white tracking-tight">Dashboard</h1>
+    <p class="text-slate-400 mt-2 text-lg">Resumen de tu actividad de lectura</p>
   </header>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+  
+  <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-blue-600 to-blue-500 shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]">
+    <h3 class="text-sm font-medium uppercase tracking-wider text-blue-100">Total de libros</h3>
+    <p class="mt-4 text-6xl font-black text-white leading-none">{{ totalBooks() }}</p>
+    <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12 font-serif">📚</span>
+  </div>
 
-  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-    <bk-stats-widget
-      label="Libros en colección"
-      [value]="statsService.metrics().booksOwned"
-      detail="Cantidad total de libros registrados"
-    ></bk-stats-widget>
+  <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-emerald-600 to-emerald-500 shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02]">
+    <h3 class="text-sm font-medium uppercase tracking-wider text-emerald-100">Libros leídos</h3>
+    <p class="mt-4 text-6xl font-black text-white leading-none">{{ readBooks() }}</p>
+    <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">✅</span>
+  </div>
 
-    <bk-stats-widget
-      label="Libros leídos"
-      [value]="statsService.metrics().booksRead"
-      detail="Registros completados este año"
-    ></bk-stats-widget>
+  <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-500/20 transition-all hover:scale-[1.02]">
+    <h3 class="text-sm font-medium uppercase tracking-wider text-orange-100">En lectura</h3>
+    <p class="mt-4 text-6xl font-black text-white leading-none">{{ readingBooks() }}</p>
+    <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">📖</span>
+  </div>
 
-    <bk-stats-widget
-      label="Meta mensual"
-      [value]="statsService.metrics().monthlyGoal"
-      detail="Lecturas planificadas para este mes"
-    ></bk-stats-widget>
+  <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-pink-600 to-rose-500 shadow-lg shadow-rose-500/20 transition-all hover:scale-[1.02]">
+    <h3 class="text-sm font-medium uppercase tracking-wider text-rose-100">En la lista</h3>
+    <p class="mt-4 text-6xl font-black text-white leading-none">{{ wishlistBooks() }}</p>
+    <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">❤️</span>
+  </div>
 
-    <bk-stats-widget
-      label="Libros prestados"
-      [value]="statsService.metrics().booksLent"
-      detail="Libros prestados a terceros"
-    ></bk-stats-widget>
+</div>
+
+<section class="bg-slate-800/50 rounded-3xl p-8 border border-slate-700/50 shadow-2xl mt-8">
+  <h2 class="text-2xl font-bold text-white mb-8 italic">Tus hábitos de lectura</h2>
+  <div class="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-700 rounded-2xl bg-slate-900/30">
+    <span class="text-4xl mb-4">📈</span>
+    <p class="text-slate-500 font-medium">Los gráficos aparecerán aquí conforme crezca tu colección</p>
   </div>
 </section>
+  
+  <section class="bg-[#1e293b] rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
+    <h2 class="text-2xl font-bold text-white mb-8">Tus hábitos de lectura</h2>
+    
+    @if (hasData()) {
+      <div class="flex items-center justify-center h-64 bg-[#0f172a]/50 rounded-2xl border border-slate-700">
+        <p class="text-slate-500 italic">El gráfico se está renderizando con tus datos reales...</p>
+      </div>
+    } @else {
+      <div class="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-700 rounded-2xl">
+        <span class="text-4xl mb-4">📈</span>
+        <p class="text-slate-500">Agrega libros a tu biblioteca para ver tus estadísticas</p>
+      </div>
+    }
+  </section>
+</div>

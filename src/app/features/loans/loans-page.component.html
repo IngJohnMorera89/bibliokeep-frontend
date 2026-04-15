@@ -7,34 +7,37 @@
 
   <div class="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
     <div class="space-y-4">
-      <article
-        *ngFor="let loan of loans()"
-        class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
-      >
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p class="text-sm font-semibold text-slate-950">{{ loan.contactName }}</p>
-            <p class="text-sm text-slate-500">Libro ID {{ loan.bookId }}</p>
-          </div>
-          <div class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">
-            {{ loan.returned ? 'Devuelto' : 'Pendiente' }}
-          </div>
-        </div>
-
-        <div class="mt-4 grid gap-2 sm:grid-cols-3">
-          <span class="text-sm text-slate-600">Préstamo: {{ loan.loanDate }}</span>
-          <span class="text-sm text-slate-600">Vencimiento: {{ loan.dueDate }}</span>
-          <button
-            *ngIf="!loan.returned"
-            class="rounded-2xl bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
-            (click)="markReturned(loan.id)"
+      @for (loan of loans(); track loan) {
+        <article
+          class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
           >
-            Marcar devuelto
-          </button>
-        </div>
-      </article>
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-slate-950">{{ loan.contactName }}</p>
+              <p class="text-sm text-slate-500">Libro ID {{ loan.bookId }}</p>
+            </div>
+            <div class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">
+              {{ loan.returned ? 'Devuelto' : 'Pendiente' }}
+            </div>
+          </div>
+          <div class="mt-4 grid gap-2 sm:grid-cols-3">
+            <span class="text-sm text-slate-600">Préstamo: {{ loan.loanDate }}</span>
+            <span class="text-sm text-slate-600">Vencimiento: {{ loan.dueDate }}</span>
+            @if (!loan.returned) {
+              <button
+                class="rounded-2xl bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+                (click)="markReturned(loan.id)"
+                >
+                Marcar devuelto
+              </button>
+            }
+          </div>
+        </article>
+      }
 
-      <p *ngIf="loans().length === 0" class="text-center text-slate-500">No hay préstamos registrados.</p>
+      @if (loans().length === 0) {
+        <p class="text-center text-slate-500">No hay préstamos registrados.</p>
+      }
     </div>
 
     <aside class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -46,9 +49,11 @@
             formControlName="bookId"
             class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
             aria-label="Seleccionar libro"
-          >
+            >
             <option value="">Selecciona un libro</option>
-            <option *ngFor="let book of books()" [value]="book.id">{{ book.title }}</option>
+            @for (book of books(); track book) {
+              <option [value]="book.id">{{ book.title }}</option>
+            }
           </select>
         </div>
 
@@ -58,38 +63,38 @@
             formControlName="contactName"
             class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
             aria-label="Nombre de contacto"
-          />
-        </div>
-
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label class="block text-sm font-medium text-slate-700">Fecha de préstamo</label>
-            <input
-              formControlName="loanDate"
-              type="date"
-              class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
-              aria-label="Fecha de préstamo"
             />
           </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700">Fecha de devolución</label>
-            <input
-              formControlName="dueDate"
-              type="date"
-              class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
-              aria-label="Fecha de devolución"
-            />
-          </div>
-        </div>
 
-        <button
-          type="submit"
-          class="w-full rounded-2xl bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
-          [disabled]="loanForm.invalid"
-        >
-          Crear préstamo
-        </button>
-      </form>
-    </aside>
-  </div>
-</section>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Fecha de préstamo</label>
+              <input
+                formControlName="loanDate"
+                type="date"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
+                aria-label="Fecha de préstamo"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700">Fecha de devolución</label>
+                <input
+                  formControlName="dueDate"
+                  type="date"
+                  class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-cyan-500"
+                  aria-label="Fecha de devolución"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full rounded-2xl bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+                [disabled]="loanForm.invalid"
+                >
+                Crear préstamo
+              </button>
+            </form>
+          </aside>
+        </div>
+      </section>

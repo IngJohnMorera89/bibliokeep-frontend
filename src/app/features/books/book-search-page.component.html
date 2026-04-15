@@ -14,16 +14,18 @@
           placeholder="Buscar por título, autor o ISBN"
           class="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none focus:border-cyan-500"
           (input)="searchService.search(searchForm.get('query')?.value ?? '')"
-        />
-      </label>
-    </form>
-  </header>
+          />
+        </label>
+      </form>
+    </header>
 
-  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-    <ng-container *ngFor="let book of searchService.results()">
-      <bk-book-card [book]="book"></bk-book-card>
-    </ng-container>
-  </div>
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      @for (book of searchService.results(); track book) {
+        <bk-book-card [book]="book"></bk-book-card>
+      }
+    </div>
 
-  <p *ngIf="searchService.results().length === 0" class="text-center text-slate-500">Empieza a escribir para ver resultados de búsqueda.</p>
-</section>
+    @if (searchService.results().length === 0) {
+      <p class="text-center text-slate-500">Empieza a escribir para ver resultados de búsqueda.</p>
+    }
+  </section>

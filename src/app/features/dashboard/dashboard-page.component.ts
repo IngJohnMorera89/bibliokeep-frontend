@@ -1,33 +1,32 @@
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { StatsService } from '../../shared/services/stats.service';
 import { BookStoreService } from '../../shared/services/book-store.service';
-import { LoanService } from '../../shared/services/loan.service';
-import { StatsWidgetComponent } from '../../shared/ui/stats-widget.component';
 
 @Component({
-  selector: 'bk-dashboard-page',
+  selector: 'bk-dashboard',
   standalone: true,
-  imports: [CommonModule, StatsWidgetComponent],
+  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dashboard-page.component.html'
 })
-export class DashboardPageComponent implements OnInit {
-  public statsService = inject(StatsService);
-  private bookStore = inject(BookStoreService);
-  private loanService = inject(LoanService);
+export class DashboardPageComponent {
+  public readonly bookStore = inject(BookStoreService);
 
-  // Expose stats signals to template
-  readonly metrics = this.statsService.metrics;
-  readonly isLoading = this.bookStore.isLoading;
-  readonly error = this.bookStore.error;
+  // Estadísticas basadas en los libros cargados en el store local
+  totalBooks = computed(() => this.bookStore.books().length);
+  
+  readBooks = computed(() => 
+    this.bookStore.books().filter(b => b.status === 'LEIDO').length
+  );
+  
+  readingBooks = computed(() => 
+    this.bookStore.books().filter(b => b.status === 'LEYENDO').length
+  );
+  
+  wishlistBooks = computed(() => 
+    this.bookStore.books().filter(b => b.status === 'DESEADO').length
+  );
 
-  async ngOnInit() {
-    try {
-      await this.bookStore.fetchAllBooks();
-      await this.loanService.fetchAllLoans();
-    } catch (error) {
-      console.error('Error loading dashboard data:', error);
-    }
-  }
+  // Lógica para el gráfico (por ahora representativa)
+  hasData = computed(() => this.bookStore.books().length > 0);
 }
