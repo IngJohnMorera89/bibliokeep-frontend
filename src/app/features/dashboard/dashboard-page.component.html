@@ -5,44 +5,65 @@
   </header>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-    <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-blue-600 to-blue-500 shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]">
+    <div
+      class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-blue-600 to-blue-500 shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]"
+    >
       <h3 class="text-sm font-medium uppercase tracking-wider text-blue-100">Total de libros</h3>
       <p class="mt-4 text-6xl font-black text-white leading-none">{{ totalBooks() }}</p>
-      <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">📚</span>
+      <span
+        class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12"
+        >📚</span
+      >
     </div>
 
-    <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-emerald-600 to-emerald-500 shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02]">
+    <div
+      class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-emerald-600 to-emerald-500 shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02]"
+    >
       <h3 class="text-sm font-medium uppercase tracking-wider text-emerald-100">Libros leídos</h3>
       <p class="mt-4 text-6xl font-black text-white leading-none">{{ readBooks() }}</p>
-      <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">✅</span>
+      <span
+        class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12"
+        >✅</span
+      >
     </div>
 
-    <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-500/20 transition-all hover:scale-[1.02]">
+    <div
+      class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-500/20 transition-all hover:scale-[1.02]"
+    >
       <h3 class="text-sm font-medium uppercase tracking-wider text-orange-100">En lectura</h3>
       <p class="mt-4 text-6xl font-black text-white leading-none">{{ readingBooks() }}</p>
-      <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">📖</span>
+      <span
+        class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12"
+        >📖</span
+      >
     </div>
 
-    <div class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-pink-600 to-rose-500 shadow-lg shadow-rose-500/20 transition-all hover:scale-[1.02]">
+    <div
+      class="group relative overflow-hidden rounded-3xl p-6 bg-linear-to-br from-pink-600 to-rose-500 shadow-lg shadow-rose-500/20 transition-all hover:scale-[1.02]"
+    >
       <h3 class="text-sm font-medium uppercase tracking-wider text-rose-100">En la lista</h3>
       <p class="mt-4 text-6xl font-black text-white leading-none">{{ wishlistBooks() }}</p>
-      <span class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12">❤️</span>
+      <span
+        class="absolute -bottom-2 -right-2 text-8xl opacity-10 transition-transform group-hover:scale-110 group-hover:-rotate-12"
+        >❤️</span
+      >
     </div>
   </div>
 
   <section class="bg-[#1e293b] rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
     <h2 class="text-2xl font-bold text-white mb-8">Tus hábitos de lectura</h2>
-    
-    <div class="flex items-center justify-center h-80 bg-[#0f172a]/50 rounded-2xl p-6 border border-slate-700/30">
+
+    <div
+      class="flex items-center justify-center h-80 bg-[#0f172a]/50 rounded-2xl p-6 border border-slate-700/30"
+    >
       @if (hasData()) {
-        <canvas baseChart
-          [data]="chartData()"
-          [options]="chartOptions"
-          type="doughnut"> </canvas>
+        <canvas baseChart [data]="chartData()" [options]="chartOptions" type="doughnut"> </canvas>
       } @else {
         <div class="flex flex-col items-center justify-center text-center">
           <span class="text-4xl mb-4 block">📈</span>
-          <p class="text-slate-500 font-medium italic">Agrega libros a tu biblioteca para generar estadísticas</p>
+          <p class="text-slate-500 font-medium italic">
+            Agrega libros a tu biblioteca para generar estadísticas
+          </p>
         </div>
       }
     </div>
