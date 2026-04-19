@@ -6,8 +6,9 @@ export interface Book {
   authors: string[];
   isbn: string;
   description: string;
-  thumbnail: string;
+  thumbnail?: string;
   status: BookStatus;
   rating: number;
+  coverPath?: string;
   isLent: boolean;
 }

@@ -1,32 +1,46 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Book } from '../types/book';
+import { Book } from '../../shared/types/book'; // Asegúrate de que la ruta sea correcta
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'bk-book-card',
   standalone: true,
   imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './book-card.component.html'
+  templateUrl: './book-card.component.html',
 })
 export class BookCardComponent {
-  // Inputs y Outputs con el nuevo sistema de Signals de Angular
+  // Recibe el libro como una Signal de entrada
   readonly book = input<Book>();
   readonly selected = output<MouseEvent>();
 
   /**
-   * Maneja errores de carga de imágenes externas (URLs de internet).
-   * Si la imagen falla, intenta cargar un placeholder. 
-   * Si el placeholder también falla, oculta la imagen para evitar bucles infinitos.
+   * Esta es la lógica de la imagen que preguntabas.
+   * Resuelve el error de la doble barra (//) y el 403 Forbidden.
    */
+  readonly imageUrl = computed(() => {
+    const bookData = this.book();
+
+    // CAMBIO AQUÍ: Usamos .thumbnail que es lo que viene del JSON según tu captura
+    const path = bookData?.thumbnail;
+
+    if (!bookData || !path) {
+      return 'https://picsum.photos/seed/biblio/200/300?grayscale';
+    }
+
+    const base = environment.backendUrl.replace(/\/$/, '');
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+    return `${base}${cleanPath}`;
+  });
+  // Maneja el error si la imagen no carga
   updateUrlWithPlaceholder(event: Event) {
     const imgElement = event.target as HTMLImageElement;
-    const fallbackUrl = 'https://picsum.photos/seed/biblio/200/300?grayscale';
+    const placeholder = 'https://picsum.photos/seed/biblio/200/300?grayscale';
 
-    // Si la URL que llega del formulario falla, el navegador entrará aquí
-    if (imgElement.src !== fallbackUrl) {
-      imgElement.src = fallbackUrl;
+    // Evitamos que si el placeholder también falla, se cree un bucle infinito
+    if (imgElement.src !== placeholder) {
+      imgElement.src = placeholder;
     }
   }
 }
-
