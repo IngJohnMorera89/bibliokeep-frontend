@@ -1,59 +1,52 @@
-# BibliokeepFrontend
+# Bibliokeep Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Framework](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![Language](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-## Development server
+Bienvenido al repositorio frontend de **Bibliokeep**, una solución integral diseñada para la gestión eficiente de bibliotecas/recursos. Este proyecto se enfoca en proporcionar una interfaz intuitiva, moderna y responsiva.
 
-To start a local development server, run:
+## 🚀 Descripción del Proyecto
+Bibliokeep es una plataforma desarrollada para optimizar el control de registros, búsquedas y préstamos. Esta aplicación frontend consume una API RESTful desarrollada con **Spring Boot**, asegurando una comunicación eficiente y escalable entre el cliente y el servidor.
 
-```bash
-ng serve
-```
+## 🛠️ Tecnologías Utilizadas
+*   **Framework:** Angular 17+ (o la versión que estés usando)
+*   **Lenguaje:** TypeScript
+*   **Estilos:** Tailwind CSS / CSS personalizado
+*   **Gestión de estado/servicios:** RxJS, HttpClient
+*   **Herramientas:** Git, NPM/Yarn
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 📋 Características Principales
+*   **Dashboard Intuitivo:** Visualización clara de los recursos disponibles.
+*   **Interfaz Responsiva:** Adaptable a diferentes resoluciones de pantalla (Mobile-first).
+*   **Consumo de API:** Integración robusta con backend en Spring Boot para operaciones CRUD.
+*   **Validación de Formularios:** Experiencia de usuario optimizada con validación en tiempo real.
 
-## Code scaffolding
+## ⚙️ Instalación y Ejecución
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Sigue estos pasos para levantar el proyecto en tu entorno local:
 
-```bash
-ng generate component component-name
-```
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone [https://github.com/IngJohnMorera89/bibliokeep-frontend.git](https://github.com/IngJohnMorera89/bibliokeep-frontend.git)
+    cd bibliokeep-frontend
+    ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2.  **Instalar dependencias:**
+    ```bash
+    npm install
+    ```
 
-```bash
-ng generate --help
-```
+3.  **Ejecutar el servidor de desarrollo:**
+    ```bash
+    npm start
+    ```
+    La aplicación estará disponible en `http://localhost:4200`.
 
-## Building
+## 🤝 Contribuciones
+Este proyecto forma parte de mi portafolio profesional. Si tienes sugerencias o deseas realizar una mejora, por favor abre un *Issue* o envía un *Pull Request*.
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 👤 Autor
+**John Aldemar Morera Barrera**
+*   [GitHub](https://github.com/IngJohnMorera89)
+*   Backend Java Developer | Software Engineering Student
